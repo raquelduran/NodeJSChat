@@ -1,10 +1,11 @@
-var app = require('express')();
+var express = require('express');
+app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-app.use(express.static('/'));
+app.use(express.static('public'));
 
-// app.get('/', function(req, res){
+// express.get('/', function(req, res){
 //   res.sendFile(__dirname + "/index.html");
 // });
 
@@ -15,8 +16,8 @@ io.on('connection', function(socket){
 })
 
 
-const PORT = process.env.PORT || '3000'
+const PORT = process.env.PORT || '3030'
 
 http.listen(PORT, function(){
-  console.log('listening on *:3000');
+  console.log('listening on *:3030');
 });
