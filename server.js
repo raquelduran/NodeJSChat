@@ -21,14 +21,25 @@ io.on('connection', function(socket){
 	socket.on('setUsername', function(data){
 		users.push(data);
 		socket.name = data;
+		
+		// FOR THE REST OF THE CLIENTS
+		var msg = {emisor: 'servidor', mensaje: socket.name +' se ha unido al canal', usuario: socket.name};
+		socket.broadcast.emit('chat message', msg);
+		// FOR CURRENT CLIENT
+		var msg = {emisor: 'servidor', mensaje: 'Bienvenido al canal', usuario: socket.name};
+		socket.emit('chat message', msg)
 	})
-
 
 	// MESSAGES
 	socket.on('chat message', function(msg){
    		io.sockets.emit('chat message', msg);
   	});
 
+	// DISCONNECTION
+	socket.on('disconnect', function(){
+        var msg = {emisor: 'servidor', mensaje: socket.name +' ha dejado el canal', usuario: socket.name};
+		socket.broadcast.emit('chat message', msg);
+    });
 })
 
 

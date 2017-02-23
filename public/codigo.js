@@ -69,11 +69,27 @@ $('form').submit(function(){
 });
 
 socket.on('chat message', function(msg){
+	console.log("mgs usuario" + msg.usuario);
+	console.log("user "+ user);
+	//own messages
 	if (msg.emisor == user){
 		$('.listamensajes').append('<div class="mensaje dcha"><p>'+msg.mensaje+'</p></div><div class="clearfix"></div>');
-	} else{
-		$('.listamensajes').append('<div class="mensaje izq"><p class="user">'+ msg.emisor+':</p><p>'+msg.mensaje+'</p></div><div class="clearfix"></div>');
 	}
+	// clients messages
+	else if (( msg.emisor != 'servidor')&&(msg.emisor != user)){
+	 	$('.listamensajes').append('<div class="mensaje izq"><p class="user">'+ msg.emisor+':</p><p>'+msg.mensaje+'</p></div><div class="clearfix"></div>');
+	}
+	//server messages about clients
+	else if( msg.emisor == 'servidor'){
+			$('.listamensajes').append('<div class="mensaje servidor"><p>'+msg.mensaje+'</p></div><div class="clearfix"></div>');	
+	}	
+	//server messages to own client
+	else if (( msg.emisor != 'servidor')&&(msg.emisor == user)){
+	 	$('.listamensajes').append('<div class="mensaje servidor"><p>'+msg.mensaje+'</p></div><div class="clearfix"></div>');	
+	}
+
+
+
 	//autoscrolldown
 	$('div.'+'clearfix')[ ($('div.'+'clearfix').length) -1].scrollIntoView();
 	
