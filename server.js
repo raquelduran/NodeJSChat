@@ -5,18 +5,34 @@ var io = require('socket.io')(http);
 
 app.use(express.static('public'));
 
-// express.get('/', function(req, res){
-//   res.sendFile(__dirname + "/index.html");
-// });
+var users = [];
 
 io.on('connection', function(socket){
+	// USERS NAMES 
+	socket.on('checkUsername', function(data){
+	    if (users.indexOf(data) > -1) {
+	      	socket.emit('userExists', data + ' no está disponible');
+	    }
+	    else {
+	    	socket.emit('userAvailable', data + ' disponible');
+	    }
+  	});
+
+	socket.on('setUsername', function(data){
+		users.push(data);
+		socket.name = data;
+	})
+
+
+	// MESSAGES
 	socket.on('chat message', function(msg){
    		io.sockets.emit('chat message', msg);
   	});
+
 })
 
 
-const PORT = process.env.PORT || '3030'
+const PORT = process.env.PORT || '3030';
 
 http.listen(PORT, function(){
   console.log('listening on *:3030');

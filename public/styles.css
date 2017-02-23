@@ -1,0 +1,220 @@
+		*{
+		    box-sizing: border-box;
+		}
+		body{
+			background: url("./images/fondo.png") no-repeat;
+			background-size: 	100%;
+		}
+		
+		#app{
+			margin: 	1% 4% 1% 4%;
+		}
+
+		.header{
+			background-color: #EEEEEE;
+			height: 	59px;
+			padding:	1%;
+		}
+
+		.people{
+			height:  650px;
+			background-color: 	white;
+			padding: 0px;
+		}
+
+		.chat{
+			height: 	650px;
+			background: url("http://img3.todoiphone.net/wp-content/uploads/2014/03/WhatsApp-Wallpaper-39.jpg");
+			padding: 	0px;
+		}
+
+		.header, .people, .chat{
+			border:		1px solid #DBDBDB;
+		}
+
+		input[type="search"] {
+		    border-radius: 4px;
+		    border: 1px solid #FAFAFA;
+		    background-color: white;
+		    padding: 6px 20px 6px 50px; /*position of text */
+		    box-shadow: none;
+		    display: inline-block;
+		    margin-top: 2%;
+		}
+
+		input[type="search"]:focus{
+			border: 1px solid white;
+			outline: none;
+		}
+
+		input:focus::-webkit-input-placeholder { 
+			color:transparent; 
+		}
+
+		input[type="text"] {
+		    border-radius: 4px;
+		    border: 1px solid #FAFAFA;
+		    background-color: white;
+		    padding: 6px 20px 6px 20px; /*position of text */
+		    box-shadow: none;
+		    display: inline-block;
+		    margin-top: 1%;
+		}
+
+		input[type="text"]:focus{
+			border: 1px solid white;
+			outline: none;
+		}
+
+		.searchbox{
+			background-color: #FBFBFB;
+			height: 50px;
+		}
+
+		.fa-search{
+			position: absolute;
+			top: 17px;
+			left: 50px;
+			color: grey;
+		}
+
+		.mensaje{
+			margin-bottom: 1%;
+			padding:1% 2% 1% 1%; 
+			border-radius: 	10px;
+			display: block;	
+			max-width: 	600px;
+		}
+
+		.mensaje p{
+			margin-bottom: 	0px;
+		}
+
+		.mensaje .user{
+			color: #93D9F3;
+		}
+
+/*		BOCADILLO DE COMIC
+		.mensaje:before {
+			content:"";
+			width: 0;
+			height: 0;
+			position: absolute;
+			margin: -30px 0 0 40px;
+			border-bottom: 20px solid chocolate;
+			border-right: 18px solid transparent;
+			border-left: 18px solid transparent;
+		}*/
+		.mensaje.izq{
+			float: 	left;
+			background-color: 	white;
+			margin-left: 	1%;
+		}
+		
+		.mensaje.dcha{
+			float: right;
+			background-color: 	#DCF8C6;
+			margin-right: 	1%;
+		}
+
+		.searchbox{
+			background-color: #FBFBFB;
+			height: 50px;
+		}
+
+		.sendmessage{
+			background-color: #F5F1EE;
+			height: 60px;
+			position: absolute;
+			top: 588px;
+		}
+		.listamensajes{
+			overflow:scroll;
+			overflow-y:visible;
+			overflow-x:hidden;
+			height: 	588px;
+			padding-top: 1%;
+		}
+
+		.listamensajes::-webkit-scrollbar-track
+		{
+			-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
+			background-color: #E5DDD5;
+		}
+
+		.listamensajes::-webkit-scrollbar
+		{
+			width: 7px;
+			background-color: #B9B3AD;
+		}
+
+		.listamensajes::-webkit-scrollbar-thumb
+		{
+			background-color: #B9B3AD;
+			border: 2px solid #B9B3AD;
+		}
+
+	body{
+	background-color: #EEEEEE;
+	}
+
+	#container{
+		width: 400px;
+		height: 300px;
+		background-color: white;
+		margin: auto;
+		margin-top: 5%;
+		box-shadow: 0 17px 50px 0 rgba(0,0,0,0.19), 0 12px 15px 0 rgba(0,0,0,0.24);
+		color: #4B4B4B;
+		padding: 2%;
+	}
+	#container h2{
+		font-family: 'Roboto', sans-serif;
+		font-size: 	20px;
+		text-align: 	center;
+	}
+	#container input[type="search"] {
+	    border-radius: 4px;
+	    border: 1px solid #FAFAFA;
+	    background-color: white;
+	    padding: 6px 20px 6px 50px; /*position of text */
+	    box-shadow: none;
+	    display: inline-block;
+	    margin-top: 2%;
+	}
+
+	#container input[type="search"]:focus{
+		border: 1px solid white;
+		outline: none;
+	}
+
+	#container input:focus::-webkit-input-placeholder { 
+		color:transparent; 
+	}
+
+	#container .searchbox{
+		background-color: #F5F1EE;
+		height: 50px;
+	}
+
+	#container .fa-user-o{
+		position: absolute;
+		top: 207px;
+		left: 650px;
+		color: grey;
+	}
+	#container button.introChat{
+		margin-top: 15%;
+		margin-left: 80%;
+		visibility: hidden;
+	}
+	#container button a{
+		color: black ;
+	}
+	#container #disp small{
+		margin-top: 1%;
+		color: grey;
+	}
+	#container #disp{
+		margin-top: 2%;
+	}
