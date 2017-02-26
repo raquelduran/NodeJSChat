@@ -1,12 +1,12 @@
+//rellenar listausuarios
+//añadir avatares
+//estados
+//está escribiendo
 
-//nombre no funciona, undefined. 
-
+var socket = io();
 
 var chatonscreen = false;
 
-if (!chatonscreen){
-	var socket = io();
-}
 
 //BEFORE ENTERING THE CHAT
 $('.acceso').keyup(function (e) {
@@ -16,7 +16,7 @@ $('.acceso').keyup(function (e) {
     } 
     else{
     	$('button.introChat').css("visibility", "hidden");
-    	$('#disp small').html('');
+    	$('#disp small').empty();
     }
   });
 
@@ -29,10 +29,12 @@ function checkUsername(){
 };
 
 socket.on('userExists', function(data){
+	$('#disp small').empty(); 
     $('#disp small').append(data); 
 });
 
 socket.on('userAvailable', function(data){
+	$('#disp small').empty();
     $('#disp small').append(data);    
     $('button.introChat').css('visibility', 'visible');
 });
@@ -48,29 +50,34 @@ $('a').click(function(){
 function setUsername(){
 	socket.emit('setUsername', user);	
 };
+ 
+// USERS LIST
 
-//
-
-
-
-
-
-
-
-
+socket.on('usersList', function(data){
+	$('.listausuarios').empty();
+	var usersList = data;
+	console.log(usersList);
+	var avatar = "https://hdimagesnew.com/wp-content/uploads/2016/09/image-not-found.png"
+	var estado = 'estado provisional'
+	for (var i = 0; i < usersList.length; i++) {
+	$('.listausuarios').append('<div class="chat-user col-md-12"><img src="'+avatar
+	 		+'" alt="avatar" class="col-md-3"><div class="name col-md-9"><h5>'+usersList[i]
+	 		+'</h5><p>'+estado+'</p></div></div>');
+	}
+});
 
 // MESSAGES
+
+	//SENDING
 $('form').submit(function(){
-	chatonscreen = true;
 	var msg = {emisor : user, mensaje : $('#sendm').val()}
 	socket.emit('chat message', msg);
 	$('#sendm').val('');
+	chatonscreen = true;
 	return false;
 });
-
+	//RECEIVING
 socket.on('chat message', function(msg){
-	console.log("mgs usuario" + msg.usuario);
-	console.log("user "+ user);
 	//own messages
 	if (msg.emisor == user){
 		$('.listamensajes').append('<div class="mensaje dcha"><p>'+msg.mensaje+'</p></div><div class="clearfix"></div>');
@@ -80,18 +87,17 @@ socket.on('chat message', function(msg){
 	 	$('.listamensajes').append('<div class="mensaje izq"><p class="user">'+ msg.emisor+':</p><p>'+msg.mensaje+'</p></div><div class="clearfix"></div>');
 	}
 	//server messages about clients
-	else if( msg.emisor == 'servidor'){
+	else if(( msg.emisor == 'servidor')){
 			$('.listamensajes').append('<div class="mensaje servidor"><p>'+msg.mensaje+'</p></div><div class="clearfix"></div>');	
 	}	
 	//server messages to own client
-	else if (( msg.emisor != 'servidor')&&(msg.emisor == user)){
+	else if (( msg.emisor != 'servidor')&&(msg.emisor == user)&&(chatonscreen)){
 	 	$('.listamensajes').append('<div class="mensaje servidor"><p>'+msg.mensaje+'</p></div><div class="clearfix"></div>');	
 	}
-
-
 
 	//autoscrolldown
 	$('div.'+'clearfix')[ ($('div.'+'clearfix').length) -1].scrollIntoView();
 	
 });
 
+//

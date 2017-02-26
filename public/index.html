@@ -14,13 +14,12 @@
 
 <!-- FONT AWESOME -->	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+	
+<!-- FAVICON -->
 	<link rel="icon" href="./images/whatsapp-logo-rojo.png" sizes="16x16" type="image/png">
 
 <!--own css-->
 	<link rel="stylesheet" href="styles.css">
-
-	
 	
 </head>
 <body>
@@ -29,10 +28,14 @@
 		<hr>
 		<div class="searchbox">
 			<input type="search" class="col-md-10 col-md-offset-1 acceso" placeholder="Escribe aquí tu apodo">
-			<i class="fa fa-user-o" aria-hidden="true"></i>
-			
+			<i class="fa fa-user-o" aria-hidden="true"></i>	
+		</div>
+		<div class="searchbox">
+			<input type="search" class="col-md-10 col-md-offset-1" placeholder="Comparte algo con los demás...">
+			<i class="fa fa-commenting-o" aria-hidden="true"></i>	
 		</div>
 		<p id="disp"><small><!-- Nombre de usuario no disponible --></small></p>
+
 		<a class><button class="btn btn-default introChat">Entrar</button></a>
 	</div><!-- container -->
 	<div id="app" style='display:none'>
@@ -46,10 +49,13 @@
 					<input id="busq" type="search" class="col-md-10 col-md-offset-1" placeholder="Empezar un nuevo chat">
 					<i class="fa fa-search" aria-hidden="true"></i>
 				</div>
+				<div class="listausuarios">
+
+				</div><!-- listausuarios -->
 			</div><!--.people-->
 	 		<div class="col-md-9 chat">
 		 		<div class="listamensajes">
-
+					
 				</div><!--listamensajes-->
 				<form class="sendmessage col-md-12">
 					<input id="sendm" type="text" class="col-md-11 col-md-offset-1" placeholder="Escribe un mensaje aquí" autocomplete="off">
