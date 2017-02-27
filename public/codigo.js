@@ -92,28 +92,18 @@ function setUsername(){
 };
  
 // USERS LIST
+var usersList;
 
 socket.on('usersList', function(data){
 	$('.listausuarios').empty();
-	var usersList = data;
-	var isTyping = "";
-	// var isTyping = " is typing..."
+	usersList = data;
 
 	for (var i = 0; i < usersList.length; i++) {
-		if (usersList[i].usuario == user){
-				//OWN USER
-			$('.listausuarios').append('<div class="chat-user col-md-12"><img id="'+usersList[i].usuario+
-				'"src="'+usersList[i].avatar
-	 		+'" alt="avatar" class="col-md-3"><div class="name col-md-9"><h5>'+usersList[i].usuario
-	 		+'<small>'+isTyping+'</small></h5><p>'+usersList[i].estado+'</p></div></div>');
-		} else{
-				//REST OF USERS
-			$('.listausuarios').append('<div class="chat-user col-md-12"><img src="'+usersList[i].avatar
-	 		+'" alt="avatar" class="col-md-3"><div class="name col-md-9"><h5>'+usersList[i].usuario
-	 		+'<small>'+isTyping+'</small></h5><p>'+usersList[i].estado+'</p></div></div>');
-		}	
+		$('.listausuarios').append('<div class="chat-user col-md-12" id="'+usersList[i].usuario+
+		'"><img src="'+usersList[i].avatar +'" alt="avatar" class="col-md-3"><div class="name col-md-9"><h5>'
+		+usersList[i].usuario+'<small></small></h5><p>'+usersList[i].estado+'</p></div></div>');
 	}
-	$('img#'+user).addClass('focus');
+	$('#'+user + ' img').addClass('focus');
 });
 
 // MESSAGES
@@ -153,16 +143,37 @@ socket.on('chat message', function(msg){
 
 // SHOW WHEN SOMEBODY IS TYPING
 
-// var typingTimer;
+var typingTimer;
 
-// $('#sendm').keydown(function(e) {
-// 	if (e.keyCode != 8) {
-//     	clearTimeout(typingTimer);
-//     	typingTimer = setTimeout(function () {$("p.content").html('Typing...');}, 10);
-//     }
-// });
+$('#sendm').keydown(function(e) {
+	if ((e.keyCode != 8)&&(e.keyCode != 13)) {
+    	clearTimeout(typingTimer);
+    	typingTimer = setTimeout(function () {
+    		var data = {usuario: user, typing : true};
+    		socket.emit('typing users', data)
+    	}, 10);
+    }
+});
 
-// $('#sendm').keyup(function(e) {
-// 	clearTimeout(typingTimer);
-//     typingTimer = setTimeout(function () {$("p.content").html('');}, 500);
-// });
+$('#sendm').keyup(function(e) {
+	clearTimeout(typingTimer);
+    typingTimer = setTimeout(function () {
+    	var data = {usuario: user, typing : false};
+    	socket.emit('typing users', data)
+    }, 500);
+});
+
+socket.on('change typingUsers', function(data){
+	console.log(usersList);
+	for (var i = usersList.length - 1; i >= 0; i--) {
+		if (data.indexOf(usersList[i].usuario) > -1){
+			//user typing
+			$('#'+usersList[i].usuario+ ' small').empty(); 
+			$('#'+usersList[i].usuario+ ' small').append(' is typing...');  
+		}
+		else {
+			$('#'+usersList[i].usuario+ ' small').empty();	
+		}
+	}
+
+});

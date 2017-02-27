@@ -6,6 +6,7 @@ var io = require('socket.io')(http);
 app.use(express.static('public'));
 
 var users = [];
+var typingUsers = [];
 
 io.on('connection', function(socket){
 	// USERS NAMES 
@@ -39,6 +40,21 @@ io.on('connection', function(socket){
    		io.sockets.emit('chat message', msg);
   	});
 
+	//TYPING
+	
+	socket.on('typing users', function(data){
+		if (data.typing) {
+			if (typingUsers.indexOf(data.usuario) <= -1) { //it is not in the list yet
+				typingUsers.push(data.usuario);
+				io.sockets.emit("change typingUsers", typingUsers);
+			}	
+		} else {
+			var index = typingUsers.indexOf(data.usuario);
+			typingUsers.splice(index, 1);
+			io.sockets.emit("change typingUsers", typingUsers);
+		}
+  	});
+
 	// DISCONNECTION
 	socket.on('disconnect', function(){
         var msg = {emisor: 'servidor', mensaje: socket.name +' ha dejado el canal', usuario: socket.name};
@@ -50,7 +66,7 @@ io.on('connection', function(socket){
 				console.log("salida de usuario" + users);
 			}
 		}
-		var currentIndex = users.indexOf(socket.name);
+		// var currentIndex = users.indexOf(socket.name);
 		
     });
 })
