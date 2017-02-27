@@ -72,9 +72,9 @@
 		}
 
 		.fa-search{
-			position: absolute;
-			top: 17px;
-			left: 50px;
+			position: relative;
+			top: 27%;
+			left: -78%;
 			color: grey;
 		}
 
@@ -189,7 +189,9 @@
 			background-color: #B9B3AD;
 			border: 2px solid #B9B3AD;
 		}
-
+	hr{
+		border-color: #009688;
+	}
 
 	body{
 	background-color: #EEEEEE;
@@ -197,7 +199,7 @@
 
 	#container{
 		width: 400px;
-		height: 300px;
+		height: 380px;
 		background-color: white;
 		margin: auto;
 		margin-top: 5%;
@@ -229,27 +231,38 @@
 		color:transparent; 
 	}
 
-	#container .searchbox{
+	#container .searchbox1{
+		background-color: #F5F1EE;
+		height: 50px;
+		margin-top: 27%;
+	}
+	#container .searchbox2{
 		background-color: #F5F1EE;
 		height: 50px;
 	}
 
+
 	#container .fa-user-o{
-		position: absolute;
-		top: 207px;
-		left: 650px;
+		position: relative;
+		top: 25%;
+		left: -78%;
 		color: grey;
 	}
 	#container .fa-commenting-o{
-		position: absolute;
-		top: 257px;
-		left: 650px;
+		position: relative;
+		top: 25%;
+		left: -78%;
 		color: grey;
 	}
 	#container button.introChat{
 		margin-top: 2%;
 		margin-left: 80%;
 		visibility: hidden;
+		border: 1.5px solid #009688;
+	}
+
+	.entry button:hover{
+		background-color: #e5f4f3;
 	}
 	#container button a{
 		color: black ;
@@ -260,6 +273,26 @@
 	}
 	#container #disp{
 		margin-top: 2%;
+	}
+	#container ul{
+		margin-top: 0%;
+		list-style: none;
+		padding: 0px;
+	}
+	#container li{
+		padding: 0px;
+	}
+	#container ul img{
+		width:50px;
+		height: 50px;
+		border-radius: 50%;
+	}
+	#container ul img:hover{
+		border: 1px solid #009688;
+	}
+	img.focus{
+		border: 1px solid #009688;
+		box-shadow: 0px 0px 6px 0px rgba(0,150,136,1);
 	}
 /*USER LIST*/
 	.chat-user{

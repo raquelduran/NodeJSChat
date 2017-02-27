@@ -9,19 +9,47 @@ var chatonscreen = false;
 
 
 //BEFORE ENTERING THE CHAT
+
+
 $('.acceso').keyup(function (e) {
     if (e.keyCode === 13) {
        // CHECK IF USERNAME IS AVAILABLE
-       checkUsername();
+       if ($('.acceso').val() ==''){
+       		$('#disp small').empty();
+       		$('#disp small').append("debes introducir un usuario"); 
+       } else {
+       		checkUsername();
+       }      
     } 
-    else{
+    else {
     	$('button.introChat').css("visibility", "hidden");
     	$('#disp small').empty();
     }
   });
 
+$('.acceso2').keyup(function (e) {
+    if (e.keyCode === 13) {
+       // CHECK IF USERNAME IS AVAILABLE
+       if ($('.acceso').val() ==''){
+       		$('#disp small').empty();
+       		$('#disp small').append("debes introducir un usuario"); 
+       } else{
+       		checkUsername();
+       }
+    } 
+  });
+
 // ABOUT USERNAMES
 var user;
+var avatar;
+var estado;
+
+$( "img.choice" ).click(function(){
+	$("img.choice").removeClass("focus");
+	$(this).addClass("focus");
+	avatar = $("img.focus").attr("src");
+
+})
 
 function checkUsername(){
 	user = $('.acceso').val();
@@ -41,14 +69,17 @@ socket.on('userAvailable', function(data){
 
 // CHANGE THE VIEW AND STABLISH THE USERNAME
 
-$('a').click(function(){
+$('a.entry').click(function(){
+	estado = $('.acceso2').val();
+
 	setUsername();
 	$('#container').toggle();
 	$('#app').toggle();
 });
 
 function setUsername(){
-	socket.emit('setUsername', user);	
+	var data = {usuario: user, avatar: avatar , estado: estado }
+	socket.emit('setUsername', data);	
 };
  
 // USERS LIST
@@ -57,12 +88,12 @@ socket.on('usersList', function(data){
 	$('.listausuarios').empty();
 	var usersList = data;
 	console.log(usersList);
-	var avatar = "https://hdimagesnew.com/wp-content/uploads/2016/09/image-not-found.png"
-	var estado = 'estado provisional'
+	// var avatar = "https://hdimagesnew.com/wp-content/uploads/2016/09/image-not-found.png"
+	// var estado = 'estado provisional'
 	for (var i = 0; i < usersList.length; i++) {
-	$('.listausuarios').append('<div class="chat-user col-md-12"><img src="'+avatar
-	 		+'" alt="avatar" class="col-md-3"><div class="name col-md-9"><h5>'+usersList[i]
-	 		+'</h5><p>'+estado+'</p></div></div>');
+	$('.listausuarios').append('<div class="chat-user col-md-12"><img src="'+usersList[i].avatar
+	 		+'" alt="avatar" class="col-md-3"><div class="name col-md-9"><h5>'+usersList[i].usuario
+	 		+'</h5><p>'+usersList[i].estado+'</p></div></div>');
 	}
 });
 
@@ -86,13 +117,9 @@ socket.on('chat message', function(msg){
 	else if (( msg.emisor != 'servidor')&&(msg.emisor != user)){
 	 	$('.listamensajes').append('<div class="mensaje izq"><p class="user">'+ msg.emisor+':</p><p>'+msg.mensaje+'</p></div><div class="clearfix"></div>');
 	}
-	//server messages about clients
-	else if(( msg.emisor == 'servidor')){
-			$('.listamensajes').append('<div class="mensaje servidor"><p>'+msg.mensaje+'</p></div><div class="clearfix"></div>');	
-	}	
-	//server messages to own client
-	else if (( msg.emisor != 'servidor')&&(msg.emisor == user)&&(chatonscreen)){
-	 	$('.listamensajes').append('<div class="mensaje servidor"><p>'+msg.mensaje+'</p></div><div class="clearfix"></div>');	
+	//server messages
+	else if( msg.emisor == 'servidor'){
+			$('.listamensajes').append('<div class="mensaje servidor"><p>'+msg.mensaje+'</p></div><div class="clearfix"></div>');
 	}
 
 	//autoscrolldown
