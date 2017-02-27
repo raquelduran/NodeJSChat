@@ -7,21 +7,32 @@ var chatonscreen = false;
 
 //BEFORE ENTERING THE CHAT
 
-
-$('.acceso').keyup(function (e) {
-    if (e.keyCode === 13) {
-       // CHECK IF USERNAME IS AVAILABLE
-       if (!$('.acceso').val().trim()){
+function validateIntroduced(){
+	// CHECK IF DATA INTRODUCED IS OK
+	if (!$('.acceso').val().trim()){
        		$('#disp small').empty();
        		$('#disp small').append("Debes introducir un usuario"); 
-       } 
-       else if ($("img.focus").attr("src") == undefined){
+       }
+       	else if($('.acceso').val().length >=18){
+    		$('#disp small').empty();
+    		$('#disp small').append("Nombre de usuario demasiado largo");
+    	}
+    	else if($('.acceso2').val().length >=25){
+    		$('#disp small').empty();
+    		$('#disp small').append("Intenta resumir tu estado");
+    	}
+       	else if ($("img.focus").attr("src") == undefined){
     		$('#disp small').empty();
     		$('#disp small').append("Debes elegir un avatar");
     	}
-       else {
+       	else {
        		checkUsername();
-       }    
+       	}    
+}
+
+$('.acceso').keyup(function (e) {
+    if (e.keyCode === 13) {
+       validateIntroduced();
     }
     else {
     	$('button.introChat').css("visibility", "hidden");
@@ -31,28 +42,30 @@ $('.acceso').keyup(function (e) {
 
 $('.acceso2').keyup(function (e) {
     if (e.keyCode === 13) {
-       // CHECK IF USERNAME IS AVAILABLE
-       if (!$('.acceso').val().trim()){
-       		$('#disp small').empty();
-       		$('#disp small').append("Debes introducir un usuario"); 
-       } 
-       else if ($("img.focus").attr("src") == undefined){
-       		$('#disp small').empty();
-       		$('#disp small').append("Debes elegir un avatar");
-       }
-       else{
-       		checkUsername();
-       }
+    	validateIntroduced();
     } 
+    else {
+    	$('button.introChat').css("visibility", "hidden");
+    	$('#disp small').empty();
+    }
   });
 
+	//AVATAR
 
-// SETTING THE USER
+$( "img.choice" ).click(function(){
+	$("img.choice").removeClass("focus");
+	$(this).addClass("focus");
+	avatar = $("img.focus").attr("src");
+	validateIntroduced();
+})
+
+
+// CHECK USERNAME
 var user;
 var avatar;
 var estado;
 
-function checkUsername(){
+function checkUsername(){ 
 	user = $('.acceso').val();
     socket.emit('checkUsername', user);
 };
@@ -67,16 +80,7 @@ socket.on('userAvailable', function(data){
     $('#disp small').append(data);    
     $('button.introChat').css('visibility', 'visible');
 });
-	//AVATAR
 
-$( "img.choice" ).click(function(){
-	$("img.choice").removeClass("focus");
-	$(this).addClass("focus");
-	avatar = $("img.focus").attr("src");
-	if ($('.acceso').val().trim()){
-		checkUsername();
-	}
-})
 // CHANGE THE VIEW AND STABLISH THE USER IN THE SERVER
 
 $('a.entry').click(function(){
@@ -164,7 +168,6 @@ $('#sendm').keyup(function(e) {
 });
 
 socket.on('change typingUsers', function(data){
-	console.log(usersList);
 	for (var i = usersList.length - 1; i >= 0; i--) {
 		if (data.indexOf(usersList[i].usuario) > -1){
 			//user typing

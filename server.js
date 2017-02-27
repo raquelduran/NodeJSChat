@@ -22,7 +22,6 @@ io.on('connection', function(socket){
 	socket.on('setUsername', function(data){
 		users.push(data);
 		socket.name = data.usuario;
-		console.log("entrada usuario "+users);
 		// FOR THE REST OF THE CLIENTS
 		var msg = {emisor: 'servidor', mensaje: socket.name +
 		' se ha unido al canal', usuario: socket.name};
@@ -63,7 +62,6 @@ io.on('connection', function(socket){
 			if (users[i].usuario == socket.name){
 				users.splice(i, 1);
 				socket.broadcast.emit('usersList', users);
-				console.log("salida de usuario" + users);
 			}
 		}
 		// var currentIndex = users.indexOf(socket.name);
