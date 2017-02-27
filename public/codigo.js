@@ -1,6 +1,3 @@
-//rellenar listausuarios
-//añadir avatares
-//estados
 //está escribiendo
 
 var socket = io();
@@ -16,11 +13,16 @@ $('.acceso').keyup(function (e) {
        // CHECK IF USERNAME IS AVAILABLE
        if ($('.acceso').val() ==''){
        		$('#disp small').empty();
-       		$('#disp small').append("debes introducir un usuario"); 
-       } else {
+       		$('#disp small').append("Debes introducir un usuario"); 
+       } 
+       else if ($("img.focus").attr("src") == undefined){
+    		$('#disp small').empty();
+    		$('#disp small').append("Debes elegir un avatar");
+    	}
+       else {
        		checkUsername();
-       }      
-    } 
+       }    
+    }
     else {
     	$('button.introChat').css("visibility", "hidden");
     	$('#disp small').empty();
@@ -32,8 +34,13 @@ $('.acceso2').keyup(function (e) {
        // CHECK IF USERNAME IS AVAILABLE
        if ($('.acceso').val() ==''){
        		$('#disp small').empty();
-       		$('#disp small').append("debes introducir un usuario"); 
-       } else{
+       		$('#disp small').append("Debes introducir un usuario"); 
+       } 
+       else if ($("img.focus").attr("src") == undefined){
+       		$('#disp small').empty();
+       		$('#disp small').append("Debes elegir un avatar");
+       }
+       else{
        		checkUsername();
        }
     } 
@@ -91,10 +98,18 @@ socket.on('usersList', function(data){
 	// var avatar = "https://hdimagesnew.com/wp-content/uploads/2016/09/image-not-found.png"
 	// var estado = 'estado provisional'
 	for (var i = 0; i < usersList.length; i++) {
-	$('.listausuarios').append('<div class="chat-user col-md-12"><img src="'+usersList[i].avatar
+		if (usersList[i].usuario == user){
+			$('.listausuarios').append('<div class="chat-user col-md-12"><img id="'+usersList[i].usuario+
+				'"src="'+usersList[i].avatar
 	 		+'" alt="avatar" class="col-md-3"><div class="name col-md-9"><h5>'+usersList[i].usuario
 	 		+'</h5><p>'+usersList[i].estado+'</p></div></div>');
+		} else{
+			$('.listausuarios').append('<div class="chat-user col-md-12"><img src="'+usersList[i].avatar
+	 		+'" alt="avatar" class="col-md-3"><div class="name col-md-9"><h5>'+usersList[i].usuario
+	 		+'</h5><p>'+usersList[i].estado+'</p></div></div>');
+		}	
 	}
+	$('img#'+user).addClass('focus');
 });
 
 // MESSAGES
