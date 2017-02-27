@@ -11,7 +11,7 @@ var chatonscreen = false;
 $('.acceso').keyup(function (e) {
     if (e.keyCode === 13) {
        // CHECK IF USERNAME IS AVAILABLE
-       if ($('.acceso').val() ==''){
+       if (!$('.acceso').val().trim()){
        		$('#disp small').empty();
        		$('#disp small').append("Debes introducir un usuario"); 
        } 
@@ -32,7 +32,7 @@ $('.acceso').keyup(function (e) {
 $('.acceso2').keyup(function (e) {
     if (e.keyCode === 13) {
        // CHECK IF USERNAME IS AVAILABLE
-       if ($('.acceso').val() ==''){
+       if (!$('.acceso').val().trim()){
        		$('#disp small').empty();
        		$('#disp small').append("Debes introducir un usuario"); 
        } 
@@ -46,17 +46,11 @@ $('.acceso2').keyup(function (e) {
     } 
   });
 
-// ABOUT USERNAMES
+
+// SETTING THE USER
 var user;
 var avatar;
 var estado;
-
-$( "img.choice" ).click(function(){
-	$("img.choice").removeClass("focus");
-	$(this).addClass("focus");
-	avatar = $("img.focus").attr("src");
-
-})
 
 function checkUsername(){
 	user = $('.acceso').val();
@@ -73,12 +67,20 @@ socket.on('userAvailable', function(data){
     $('#disp small').append(data);    
     $('button.introChat').css('visibility', 'visible');
 });
+	//AVATAR
 
-// CHANGE THE VIEW AND STABLISH THE USERNAME
+$( "img.choice" ).click(function(){
+	$("img.choice").removeClass("focus");
+	$(this).addClass("focus");
+	avatar = $("img.focus").attr("src");
+	if ($('.acceso').val().trim()){
+		checkUsername();
+	}
+})
+// CHANGE THE VIEW AND STABLISH THE USER IN THE SERVER
 
 $('a.entry').click(function(){
 	estado = $('.acceso2').val();
-
 	setUsername();
 	$('#container').toggle();
 	$('#app').toggle();
@@ -94,19 +96,21 @@ function setUsername(){
 socket.on('usersList', function(data){
 	$('.listausuarios').empty();
 	var usersList = data;
-	console.log(usersList);
-	// var avatar = "https://hdimagesnew.com/wp-content/uploads/2016/09/image-not-found.png"
-	// var estado = 'estado provisional'
+	var isTyping = "";
+	// var isTyping = " is typing..."
+
 	for (var i = 0; i < usersList.length; i++) {
 		if (usersList[i].usuario == user){
+				//OWN USER
 			$('.listausuarios').append('<div class="chat-user col-md-12"><img id="'+usersList[i].usuario+
 				'"src="'+usersList[i].avatar
 	 		+'" alt="avatar" class="col-md-3"><div class="name col-md-9"><h5>'+usersList[i].usuario
-	 		+'</h5><p>'+usersList[i].estado+'</p></div></div>');
+	 		+'<small>'+isTyping+'</small></h5><p>'+usersList[i].estado+'</p></div></div>');
 		} else{
+				//REST OF USERS
 			$('.listausuarios').append('<div class="chat-user col-md-12"><img src="'+usersList[i].avatar
 	 		+'" alt="avatar" class="col-md-3"><div class="name col-md-9"><h5>'+usersList[i].usuario
-	 		+'</h5><p>'+usersList[i].estado+'</p></div></div>');
+	 		+'<small>'+isTyping+'</small></h5><p>'+usersList[i].estado+'</p></div></div>');
 		}	
 	}
 	$('img#'+user).addClass('focus');
@@ -116,11 +120,16 @@ socket.on('usersList', function(data){
 
 	//SENDING
 $('form').submit(function(){
-	var msg = {emisor : user, mensaje : $('#sendm').val()}
-	socket.emit('chat message', msg);
-	$('#sendm').val('');
-	chatonscreen = true;
-	return false;
+	 if ($('#sendm').val().trim()){ 
+		var msg = {emisor : user, mensaje : $('#sendm').val()}
+		socket.emit('chat message', msg);
+		$('#sendm').val('');
+		chatonscreen = true;
+		return false;
+	} else {  //doesn't do anything if #sendm is blank
+		return false;
+	}
+	
 });
 	//RECEIVING
 socket.on('chat message', function(msg){
@@ -142,4 +151,18 @@ socket.on('chat message', function(msg){
 	
 });
 
-//
+// SHOW WHEN SOMEBODY IS TYPING
+
+// var typingTimer;
+
+// $('#sendm').keydown(function(e) {
+// 	if (e.keyCode != 8) {
+//     	clearTimeout(typingTimer);
+//     	typingTimer = setTimeout(function () {$("p.content").html('Typing...');}, 10);
+//     }
+// });
+
+// $('#sendm').keyup(function(e) {
+// 	clearTimeout(typingTimer);
+//     typingTimer = setTimeout(function () {$("p.content").html('');}, 500);
+// });
